@@ -4,7 +4,7 @@
 
 ## Current sprint
 
-**None active** (Phase 0). Last completed: **Sprint 0.4 — Domain Foundation** (validated). Awaiting selection of the next sprint.
+**Sprint 0.5 — Phase 1 Commerce Core design (documented, YAGNI-scoped).** Design only — no code/packages/ADRs. Spec: [SPRINT_0_5_PHASE1_DESIGN.md](implementation/SPRINT_0_5_PHASE1_DESIGN.md). Awaiting approval to start Sprint 0.6.
 
 ## Completed sprints
 
@@ -19,7 +19,7 @@
 
 ## Next sprint
 
-Not yet selected. Remaining **Phase 0** foundation items (per the roadmap): event/messaging backbone (Redpanda + outbox + schema registry), auth foundation (Ory), dependency-cruiser fitness functions, and a "hello-domain" service wiring domain + application + infrastructure (Phase-0 exit). Awaiting approval to plan one.
+**Sprint 0.6 — Event backbone** (finishes Phase 0): `@platform/outbox` + `@platform/domain-events` (Avro + schema registry) + outbox→Debezium→Redpanda wiring + idempotent-consumer base. Prerequisite for the Phase-1 domain-events strategy (design §4). Then 0.7 (auth + audit/flags/tenancy seams) → 0.8 (fitness functions + generators + walking skeleton) → Phase 1 contexts (1.1–1.6). Awaiting approval.
 
 ## Pending work
 

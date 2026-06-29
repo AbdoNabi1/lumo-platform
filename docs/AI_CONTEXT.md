@@ -51,7 +51,8 @@ Per-package responsibilities: [`development/WORKSPACE_GUIDE.md`](development/WOR
 
 - ✅ **0.1** monorepo · ✅ **0.2** infrastructure · ✅ **0.3** application layer · ✅ **0.4** domain foundation + ID/Clock abstractions (all validated: lint/typecheck/test/build green).
 - **0.4 review findings resolved (2026-06-29):** M1 `@platform/contracts` (port interfaces, [ADR-0002](architecture/adr/0002-outbound-ports-in-contracts-package.md)) · M2 UUIDv7 · M3 `Clock` + `@platform/clock` · M4 deep-frozen value objects · M5 `UniqueEntityId` non-empty invariant · L1 `pullDomainEvents()`. See DECISIONS D-018–D-022.
-- **Next:** not yet selected — remaining Phase-0 items (event/messaging backbone, auth foundation, dependency-cruiser fitness functions, hello-domain service). See [PROJECT_STATE.md](PROJECT_STATE.md).
+- **0.5 (design only, 2026-06-29):** Phase 1 (Commerce Core) business-layer design — YAGNI-scoped to 9 contexts (catalog, media, pricing, inventory, cart, checkout, orders, payments, identity); conforms to the contract, no ADR. Spec: [SPRINT_0_5_PHASE1_DESIGN.md](implementation/SPRINT_0_5_PHASE1_DESIGN.md).
+- **Next:** Sprint 0.6 — event backbone (`@platform/outbox` + `@platform/domain-events` + outbox→Debezium→Redpanda), then 0.7 auth/seams → 0.8 fitness functions + walking skeleton → Phase 1 (1.1–1.6). See [PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## Important conventions & coding standards
 
