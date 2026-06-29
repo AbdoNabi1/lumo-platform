@@ -1,8 +1,8 @@
 {
-  "name": "@platform/application",
+  "name": "@platform/domain",
   "version": "0.0.0",
   "private": true,
-  "description": "Application-layer foundation: DI container, CQRS command/query buses, use-case + handler contracts, middleware pipeline. Framework-free; no infrastructure dependencies.",
+  "description": "Domain foundation: pure shared-kernel building blocks (Entity, AggregateRoot, ValueObject, UniqueEntityId, DomainEvent, Guard, Specification, DomainService). Depends only on @platform/types and @platform/utils.",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -15,7 +15,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@platform/contracts": "workspace:*",
     "@platform/types": "workspace:*",
     "@platform/utils": "workspace:*"
   },

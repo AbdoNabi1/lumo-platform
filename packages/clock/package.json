@@ -1,8 +1,8 @@
 {
-  "name": "@platform/application",
+  "name": "@platform/clock",
   "version": "0.0.0",
   "private": true,
-  "description": "Application-layer foundation: DI container, CQRS command/query buses, use-case + handler contracts, middleware pipeline. Framework-free; no infrastructure dependencies.",
+  "description": "Infrastructure adapter: system clock implementing the application Clock port.",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -15,9 +15,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@platform/contracts": "workspace:*",
-    "@platform/types": "workspace:*",
-    "@platform/utils": "workspace:*"
+    "@platform/contracts": "workspace:*"
   },
   "devDependencies": {
     "@platform/eslint-config": "workspace:*",
