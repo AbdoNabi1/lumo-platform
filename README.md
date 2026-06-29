@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+
 # Premium educational-toys commerce platform
 
 Monorepo for the platform. **Phase 2, Sprint 0.1 — foundation bootstrap only** (no business
@@ -22,13 +24,13 @@ ESLint 9 · Prettier · Husky · lint-staged · commitlint · Changesets · Dock
 
 ## Structure
 
-| Path | What |
-|---|---|
-| `apps/storefront` | Next.js app shell (foundation smoke-screen) |
-| `apps/admin/prototype` | Frozen admin UI prototype (do not edit) |
-| `packages/*` | Shared `@platform/*` packages (ui, design, types, utils, config, tracking) + shared build configs |
-| `infrastructure/docker` | Dockerfile + compose |
-| `docs/*` | Architecture, UI (frozen), growth, analytics, admin, platform, implementation, development |
+| Path                    | What                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------------- |
+| `apps/storefront`       | Next.js app shell (foundation smoke-screen)                                                       |
+| `apps/admin/prototype`  | Frozen admin UI prototype (do not edit)                                                           |
+| `packages/*`            | Shared `@platform/*` packages (ui, design, types, utils, config, tracking) + shared build configs |
+| `infrastructure/docker` | Dockerfile + compose                                                                              |
+| `docs/*`                | Architecture, UI (frozen), growth, analytics, admin, platform, implementation, development        |
 
 Full map: [docs/development/FOLDER_STRUCTURE.md](docs/development/FOLDER_STRUCTURE.md) ·
 Workspaces: [docs/development/WORKSPACE_GUIDE.md](docs/development/WORKSPACE_GUIDE.md) ·
@@ -45,3 +47,8 @@ Foundation only: monorepo, shared packages, design tokens + theme provider + dar
 primitives, quality tooling, env management, Docker, CI, logging/error/flag/config infrastructure,
 tracking **types**. **No** auth, database, APIs, business components, or features — those begin in
 later sprints per the [implementation roadmap](docs/implementation/IMPLEMENTATION_ROADMAP.md).
+=======
+
+# lumo-platform
+
+> > > > > > > 050300c96ca76b3b208264ef3a20b283fc79a334
