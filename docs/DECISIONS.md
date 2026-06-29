@@ -135,3 +135,15 @@
 - **Decision:** `CryptoIdGenerator` produces **UUIDv7** (48-bit ms timestamp + random) using `node:crypto` only — no external dependency. Aligns the implementation with the documented time-ordered id strategy. _(Resolves review finding M2; chosen over an ADR for v4.)_
 - **Reason:** Time-ordered ids preserve B-tree/index locality; removes the prior v4 drift. No new dependency keeps the supply-chain policy (D-016) intact.
 - **Trade-offs:** UUIDv7 embeds a creation timestamp (minor information exposure) — acceptable for internal ids; hand-rolled generation is covered by format + ordering tests.
+
+### D-023 — Event backbone: classic outbox in two packages
+
+- **Decision:** Cross-context integration-event **contracts** (envelope, topic/versioning helpers, `EventSerializer`) live in `@platform/domain-events` (a leaf — the only async coupling surface). The **runtime** (transactional outbox write-side, `EventPublisher`/`EventConsumer`, `ProcessedEventStore`, `DeadLetterStore`, `RetryPolicy`, in-memory adapters) lives in `@platform/messaging`. Classic DDD + Outbox — **no CQRS/Event Sourcing**. The `OutboxWriter` is invoked by infrastructure (the persistence boundary) and writes only to the outbox inside the aggregate's transaction; `correlationId`/`causationId` live only on integration events (domain events stay pure). Messaging ports stay in `@platform/messaging` (not `@platform/contracts`, which keeps only universal ports). Dependency direction `domain ← application ← messaging ← infrastructure`. (Sprint 0.6; no ADR — the architecture contract docs 02/05 are unchanged.)
+- **Reason:** Reuses `@platform/domain` events + `@platform/repository` transactions; lean coupling surface; testable without a broker.
+- **Trade-offs:** Two packages; the outbox write is an infrastructure responsibility (the application stays messaging-free).
+
+### D-024 — Serialization is an abstraction; production codec deferred
+
+- **Decision:** `EventSerializer` is an interface; the **production** implementation (Avro/Protobuf via the schema registry) is intentionally **unimplemented** in Sprint 0.6. A **test-only** `InMemoryEventSerializer` lives at `@platform/domain-events/testing`. There is **no JSON production default**. The envelope uses only primitive field types so it is already Avro-compatible (no future migration). Redpanda/Debezium/Apicurio adapters are deferred to the broker-wiring sprint (D-A). (Sprint 0.6; no ADR — defers adapters the contract already names, without changing its rules.)
+- **Reason:** YAGNI + the current environment has no broker/registry; avoids committing to a wire codec prematurely while keeping the contract stable.
+- **Trade-offs:** No end-to-end broker test until the wiring sprint; the in-memory serializer encodes via JSON internally (test-only, not the production format).

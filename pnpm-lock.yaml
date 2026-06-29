@@ -316,6 +316,27 @@ importers:
         specifier: ^2.1.4
         version: 2.1.9(@types/node@22.20.0)(lightningcss@1.32.0)
 
+  packages/domain-events:
+    devDependencies:
+      '@platform/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@platform/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.7.5
+        version: 22.20.0
+      eslint:
+        specifier: ^9.13.0
+        version: 9.39.4(jiti@2.7.0)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.4
+        version: 2.1.9(@types/node@22.20.0)(lightningcss@1.32.0)
+
   packages/eslint-config:
     dependencies:
       '@eslint/js':
@@ -383,6 +404,37 @@ importers:
       '@types/node':
         specifier: ^22.7.5
         version: 22.20.0
+      eslint:
+        specifier: ^9.13.0
+        version: 9.39.4(jiti@2.7.0)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.4
+        version: 2.1.9(@types/node@22.20.0)(lightningcss@1.32.0)
+
+  packages/messaging:
+    dependencies:
+      '@platform/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@platform/domain':
+        specifier: workspace:*
+        version: link:../domain
+      '@platform/domain-events':
+        specifier: workspace:*
+        version: link:../domain-events
+      '@platform/utils':
+        specifier: workspace:*
+        version: link:../utils
+    devDependencies:
+      '@platform/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@platform/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       eslint:
         specifier: ^9.13.0
         version: 9.39.4(jiti@2.7.0)
