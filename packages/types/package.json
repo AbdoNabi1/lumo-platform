@@ -12,12 +12,13 @@
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"no tests yet\""
+    "test": "vitest run"
   },
   "devDependencies": {
     "@platform/eslint-config": "workspace:*",
     "@platform/tsconfig": "workspace:*",
     "eslint": "^9.13.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
   }
 }

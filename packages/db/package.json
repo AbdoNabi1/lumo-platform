@@ -26,6 +26,7 @@
   "dependencies": {
     "@platform/config": "workspace:*",
     "@platform/health": "workspace:*",
+    "@platform/repository": "workspace:*",
     "@platform/utils": "workspace:*",
     "@prisma/client": "^6.5.0"
   },

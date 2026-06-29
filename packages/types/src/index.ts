@@ -14,10 +14,14 @@ declare const __brand: unique symbol;
 /** Nominal/branded primitive, e.g. `type UserId = Brand<string, "UserId">`. */
 export type Brand<T, B extends string> = T & { readonly [__brand]: B };
 
-/** Discriminated result type for expected (non-exceptional) failures. */
+/** Discriminated result type for expected (non-exceptional) failures (a.k.a. Either). */
 export type Result<T, E = Error> =
-  | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly error: E };
+  { readonly ok: true; readonly value: T } | { readonly ok: false; readonly error: E };
+
+/** Either is an alias of {@link Result} with error-first generic ordering, for call-site clarity. */
+export type Either<E, T> = Result<T, E>;
+
+export * from "./result";
 
 /** Cursor-paginated envelope (cursor-only, per the API architecture contract). */
 export interface Paginated<T> {
