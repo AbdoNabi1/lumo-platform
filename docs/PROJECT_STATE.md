@@ -4,24 +4,25 @@
 
 ## Current sprint
 
-**None active** (Phase 0). Last completed: **Sprint 0.6 — Event Backbone** (validated). Awaiting approval to start Sprint 0.7.
+**None active** (Phase 0). Last completed: **Sprint 0.7 — Authentication Foundation & Cross-Cutting Seams** (validated). Awaiting approval to start Sprint 0.8.
 
 ## Completed sprints
 
-| Sprint | Scope                                                                                                                                                                                   | Validation                                                                        |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| 0.1    | Monorepo foundation (Turborepo/pnpm, shared packages, tooling, CI, Docker)                                                                                                              | ✅ green                                                                          |
-| 0.2    | Infrastructure foundation (db/redis/clickhouse/storage/secrets/observability/health + config server)                                                                                    | ✅ lint/typecheck/test/build green (live Docker checks deferred — no Docker host) |
-| 0.3    | Application-layer foundation (DI, CQRS buses, UseCase, middleware, repo ports, Prisma adapter, Result/Either, domain errors)                                                            | ✅ green (36 tests)                                                               |
-| 0.4    | Domain foundation (`@platform/domain`) + ID/Clock abstractions (`@platform/contracts` ports, `@platform/id` UUIDv7, `@platform/clock`)                                                  | ✅ green (32 tests)                                                               |
-| 0.5    | Phase 1 Commerce Core business-layer design (documentation only)                                                                                                                        | n/a (design)                                                                      |
-| 0.6    | Event backbone — `@platform/domain-events` (integration-event contracts) + `@platform/messaging` (outbox/publisher/consumer/idempotency/retry/DLQ, in-memory adapters); broker-agnostic | ✅ green (22 tests)                                                               |
+| Sprint | Scope                                                                                                                                                                                                                                   | Validation                                                                        |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 0.1    | Monorepo foundation (Turborepo/pnpm, shared packages, tooling, CI, Docker)                                                                                                                                                              | ✅ green                                                                          |
+| 0.2    | Infrastructure foundation (db/redis/clickhouse/storage/secrets/observability/health + config server)                                                                                                                                    | ✅ lint/typecheck/test/build green (live Docker checks deferred — no Docker host) |
+| 0.3    | Application-layer foundation (DI, CQRS buses, UseCase, middleware, repo ports, Prisma adapter, Result/Either, domain errors)                                                                                                            | ✅ green (36 tests)                                                               |
+| 0.4    | Domain foundation (`@platform/domain`) + ID/Clock abstractions (`@platform/contracts` ports, `@platform/id` UUIDv7, `@platform/clock`)                                                                                                  | ✅ green (32 tests)                                                               |
+| 0.5    | Phase 1 Commerce Core business-layer design (documentation only)                                                                                                                                                                        | n/a (design)                                                                      |
+| 0.6    | Event backbone — `@platform/domain-events` (integration-event contracts) + `@platform/messaging` (outbox/publisher/consumer/idempotency/retry/DLQ, in-memory adapters); broker-agnostic                                                 | ✅ green (22 tests)                                                               |
+| 0.7    | Auth/authz **ports** in `@platform/contracts` (`Principal`/`Authenticator`/`Permission`/`AccessControl`) + `AuthenticationError`/`AuthorizationError` in `@platform/utils` + `@platform/feature-flags` (minimal `InMemoryFeatureFlags`) | ✅ green (utils 5, flags 3)                                                       |
 
 > **0.4 post-review hardening (2026-06-29):** review findings M1–M5 + L1 resolved — added `@platform/contracts` (outbound port interfaces) and `@platform/clock`; `@platform/id` now emits UUIDv7; value objects deep-frozen; `UniqueEntityId` rejects empty/blank; `AggregateRoot.pullDomainEvents()` added. All gates green (domain 28, id 3, clock 1). See [SPRINT_0_4_REPORT.md](implementation/SPRINT_0_4_REPORT.md) §10.
 
 ## Next sprint
 
-**Sprint 0.7 — auth foundation + cross-cutting seams** (Ory; audit-log, feature-flag, and tenancy seams). Then 0.8 (dependency-cruiser fitness functions + generators + walking skeleton) → Phase 1 contexts (1.1–1.6). Awaiting approval.
+**Sprint 0.8 — dependency-cruiser fitness functions + generators + walking skeleton** (finishes Phase 0). Then Phase 1 contexts (1.1–1.6). Awaiting approval. (Deferred from 0.7: audit subsystem, Ory/Keto + RBAC adapters, DI tokens, flag rollout engine + Experimentation source.)
 
 > **Deferred to the broker-wiring sprint:** Redpanda publisher/consumer adapters, Debezium connectors, Apicurio + Avro/Protobuf `EventSerializer`, Prisma adapters for the outbox/processed/DLQ stores, live-broker integration tests (need a Docker host).
 

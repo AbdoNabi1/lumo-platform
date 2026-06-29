@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { AppError } from "./errors";
 import {
+  AuthenticationError,
+  AuthorizationError,
   BusinessRuleError,
   ConcurrencyError,
   DomainError,
@@ -23,6 +25,20 @@ describe("domain errors", () => {
   it("carry retryable semantics", () => {
     expect(new ConcurrencyError().retryable).toBe(true);
     expect(new BusinessRuleError("nope").retryable).toBe(false);
+  });
+
+  it("model authentication and authorization failures", () => {
+    const authn = new AuthenticationError();
+    const authz = new AuthorizationError("denied", { context: { permission: "orders:refund" } });
+
+    expect(authn).toBeInstanceOf(DomainError);
+    expect(authn.code).toBe("UNAUTHENTICATED");
+    expect(authn.retryable).toBe(false);
+
+    expect(authz).toBeInstanceOf(DomainError);
+    expect(authz.code).toBe("FORBIDDEN");
+    expect(authz.retryable).toBe(false);
+    expect(toErrorEnvelope(authz, "trace-2").code).toBe("FORBIDDEN");
   });
 });
 

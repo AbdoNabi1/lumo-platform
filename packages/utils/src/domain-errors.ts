@@ -86,6 +86,27 @@ export class UnexpectedError extends DomainError {
   }
 }
 
+/** The request lacks valid authentication credentials (maps to HTTP 401). */
+export class AuthenticationError extends DomainError {
+  readonly retryable = false;
+
+  constructor(message = "Authentication required", options: { cause?: unknown } = {}) {
+    super(message, { code: "UNAUTHENTICATED", cause: options.cause });
+  }
+}
+
+/** The authenticated principal is not permitted to perform the action (maps to HTTP 403). */
+export class AuthorizationError extends DomainError {
+  readonly retryable = false;
+
+  constructor(
+    message = "Not authorized",
+    options: { cause?: unknown; context?: Record<string, unknown> } = {},
+  ) {
+    super(message, { code: "FORBIDDEN", cause: options.cause, context: options.context });
+  }
+}
+
 export function isDomainError(value: unknown): value is DomainError {
   return value instanceof DomainError;
 }
