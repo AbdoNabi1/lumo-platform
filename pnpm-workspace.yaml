@@ -1,0 +1,15 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "services/*"
+
+# Approve build scripts for these trusted dependencies. pnpm sandboxes dependency
+# build scripts by default; these are required to run (Prisma query engine, esbuild
+# binary for Vitest/tsx, sharp native, protobufjs).
+allowBuilds:
+  "@prisma/client": true
+  "@prisma/engines": true
+  esbuild: true
+  prisma: true
+  protobufjs: true
+  sharp: true

@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+dist
+build
+.turbo
+coverage
+pnpm-lock.yaml
+**/CHANGELOG.md
+
+# FROZEN UI — never reformat the approved prototype (docs/ui is the source of truth)
+apps/admin/prototype/admin-dashboard.frozen.html

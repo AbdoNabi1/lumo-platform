@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tiny Scholars — Admin dashboard (frozen prototype)</title>
+<!--
+  FROZEN UI REFERENCE — DO NOT EDIT.
+  Approved 2026-06-28. Single source of truth for the admin UI.
+
+  The <style>, markup, and <script> below the "BEGIN approved prototype" marker are the
+  approved prototype, byte-for-byte unchanged.
+
+  Only this <head> wrapper was added so the approved widget renders as a standalone file:
+    - Tabler outline icon webfont (the chat host environment provided this automatically).
+    - --font-sans / --font-mono / --font-voice variables (the host provided these; here a
+      neutral system stack stands in for the host's proprietary sans — this is an environment
+      substitution, not a visual redesign).
+    - A neutral page background + body reset.
+
+  Any change to the content below requires explicit approval. See docs/ui/ for the contract.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" />
+<style>
+  :root{
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --font-voice:Georgia,"Times New Roman",serif;
+  }
+  html,body{margin:0}
+  body{background:#ececec;padding:24px;font-family:var(--font-sans)}
+  @media (prefers-color-scheme: dark){body{background:#1a1a1d}}
+</style>
+</head>
+<body>
+<!-- BEGIN approved prototype (verbatim) -->
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+#ad-root{--bg:#f6f6f7;--surface:#fff;--surface2:#fafafb;--bd:#e8e8eb;--bds:#d8d8dd;--hov:#f1f1f4;--tx:#16161a;--tx2:#5b5e66;--tx3:#8d909a;--ac:#5b53e0;--acb:#eeedfc;--act:#4a43c9;--gr:#0f8a4f;--grb:#e6f5ec;--am:#b5740a;--amb:#fbf0db;--rd:#c92f24;--rdb:#fcebe9;font-family:var(--font-sans);color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;line-height:1.45}
+#ad-root.dark{--bg:#0e0e11;--surface:#17171c;--surface2:#1d1d23;--bd:#2a2a31;--bds:#3a3a44;--hov:#222229;--tx:#f1f1f4;--tx2:#a6a9b1;--tx3:#71747d;--ac:#8b84f8;--acb:#272341;--act:#b8b3fb;--gr:#3fd089;--grb:#102619;--am:#e0a008;--amb:#2a2008;--rd:#f6776b;--rdb:#2a1512}
+.tbar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--surface)}
+.brand{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500}
+.lg{width:24px;height:24px;border-radius:7px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.tsearch{flex:0 1 300px;height:32px;border:1px solid var(--bd);border-radius:8px;background:var(--surface2);display:flex;align-items:center;gap:8px;padding:0 10px;color:var(--tx3);font-size:12.5px}
+.tacts{margin-left:auto;display:flex;align-items:center;gap:6px}
+.ibtn{width:32px;height:32px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.ibtn:hover{background:var(--hov);color:var(--tx)}
+.av{width:30px;height:30px;border-radius:50%;background:var(--acb);color:var(--act);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500}
+.body{display:grid;grid-template-columns:204px 1fr}
+.side{background:var(--surface);border-right:1px solid var(--bd);padding:8px 0 16px}
+.ng{font-size:11px;font-weight:500;color:var(--tx3);padding:12px 18px 4px}
+.ni{display:flex;align-items:center;gap:10px;margin:1px 8px;padding:6px 10px;border-radius:8px;font-size:13px;color:var(--tx2);cursor:pointer}
+.ni i{font-size:17px}
+.ni:hover{background:var(--hov);color:var(--tx)}
+.ni.on{background:var(--acb);color:var(--act)}
+.main{min-width:0;padding:18px 20px 28px}
+.ph{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.ph h1{font-size:19px;font-weight:500;margin:0}
+.ph p{font-size:13px;color:var(--tx2);margin:3px 0 0}
+.sp{flex:1}
+.btn{font-size:12.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--bds);background:var(--surface);color:var(--tx);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--hov)}
+.btn i{font-size:16px}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.pri:hover{background:var(--act)}
+.grid{display:grid;gap:12px}
+.k4{grid-template-columns:repeat(4,1fr)}
+.metric{background:var(--surface);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;cursor:grab}
+.metric.drag{opacity:.35}
+.metric .l{font-size:12px;color:var(--tx2);display:flex;align-items:center;gap:6px}
+.metric .v{font-size:22px;font-weight:500;margin-top:6px}
+.dl{font-size:12px;margin-top:4px;display:flex;align-items:center;gap:2px}
+.dl.up{color:var(--gr)}.dl.dn{color:var(--rd)}
+.card{background:var(--surface);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.ch{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:13.5px;font-weight:500}
+.cb{padding:14px}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{text-align:left;font-weight:500;color:var(--tx2);padding:9px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:var(--hov)}
+.bdg{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.bg{background:var(--grb);color:var(--gr)}.ba{background:var(--amb);color:var(--am)}.br{background:var(--rdb);color:var(--rd)}.bn{background:var(--hov);color:var(--tx2)}.bc{background:var(--acb);color:var(--act)}
+.tb{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pill{font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid var(--bd);background:var(--surface);color:var(--tx2);cursor:pointer}
+.pill.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.sw{width:36px;height:20px;border-radius:999px;background:var(--bds);position:relative;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .15s}
+.sw.on{background:var(--ac)}
+.sw.on::after{left:18px}
+.bar{height:7px;border-radius:999px;background:var(--hov);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--ac);border-radius:999px}
+.pb{display:grid;grid-template-columns:148px 1fr;gap:12px}
+.pal{display:flex;flex-direction:column;gap:6px}
+.pi{padding:8px 10px;border:1px dashed var(--bds);border-radius:8px;font-size:12px;color:var(--tx2);cursor:grab;display:flex;align-items:center;gap:8px;background:var(--surface)}
+.pi:hover{border-color:var(--ac);color:var(--act)}
+.cv{min-height:300px;border:1.5px dashed var(--bds);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--surface2)}
+.cv.over{border-color:var(--ac);background:var(--acb)}
+.blk{background:var(--surface);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:grab;font-size:12.5px}
+.blk.drag{opacity:.35}
+.blk .gp{color:var(--tx3);font-size:16px}
+.blk .x{margin-left:auto;color:var(--tx3);cursor:pointer;font-size:16px}
+.blk .x:hover{color:var(--rd)}
+.lp{height:64px;border-radius:8px;background:var(--acb);display:flex;align-items:center;justify-content:center;color:var(--act);font-size:18px}
+@media(max-width:560px){.body{grid-template-columns:56px 1fr}.ni span,.ng{display:none}.ni{justify-content:center}.k4{grid-template-columns:repeat(2,1fr)}}
+</style>
+<h2 class="sr-only">Premium Shopify-inspired admin dashboard mockup with grouped sidebar navigation, KPIs, orders, page builder drag and drop, A/B testing, feature flags, and a working dark mode toggle.</h2>
+<div id="ad-root">
+  <div class="tbar">
+    <div class="brand"><span class="lg">T</span><span>Tiny Scholars</span></div>
+    <div class="tsearch"><i class="ti ti-search" aria-hidden="true"></i><span>Search orders, products, customers</span><span style="margin-left:auto;font-size:11px;color:var(--tx3)">⌘K</span></div>
+    <div class="tacts">
+      <button class="ibtn" id="dm" aria-label="Toggle dark mode"><i class="ti ti-moon" aria-hidden="true"></i></button>
+      <button class="ibtn" aria-label="Notifications"><i class="ti ti-bell" aria-hidden="true"></i></button>
+      <button class="ibtn" aria-label="Help"><i class="ti ti-help" aria-hidden="true"></i></button>
+      <div class="av">AE</div>
+    </div>
+  </div>
+  <div class="body">
+    <aside class="side" id="side"></aside>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+<script>
+(function(){
+var root=document.getElementById('ad-root'),side=document.getElementById('side'),main=document.getElementById('main');
+var ic=function(n){return '<i class="ti ti-'+n+'" aria-hidden="true"></i>'};
+var bd=function(t,c){return '<span class="bdg '+c+'">'+t+'</span>'};
+var sp='<span class="sp"></span>';
+function head(t,s,a){return '<div class="ph"><div><h1>'+t+'</h1><p>'+s+'</p></div><div class="sp"></div>'+(a||'')+'</div>'}
+function pri(l,i){return '<button class="btn pri">'+ic(i||'plus')+l+'</button>'}
+function sec(l,i){return '<button class="btn">'+ic(i)+l+'</button>'}
+function tbl(c,r){return '<table class="tbl"><thead><tr>'+c.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr></thead><tbody>'+r.map(function(row){return '<tr>'+row.map(function(cell){return '<td>'+cell+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>'}
+function ctbl(t,i,c,r,a){return '<div class="card"><div class="ch">'+ic(i)+t+'<span class="sp"></span>'+(a||'')+'</div>'+tbl(c,r)+'</div>'}
+function bar(p){return '<div class="bar"><span style="width:'+p+'%"></span></div>'}
+function toolbar(){return '<div class="tb"><div class="tsearch" style="flex:0 0 200px">'+ic('search')+'<span>Search</span></div>'+sec('Filter','filter')+sec('Sort','arrows-sort')+'<div class="sp"></div>'+sec('Export','download')+'</div>'}
+function list(t,s,prim,c,r){return head(t,s,prim)+toolbar()+'<div class="card">'+tbl(c,r)+'</div>'}
+
+var NAV=[
+['Overview',[['dashboard','Dashboard','layout-dashboard']]],
+['Sell',[['orders','Orders','shopping-cart'],['products','Products','package'],['inventory','Inventory','stack-2'],['customers','Customers','users']]],
+['Measure',[['analytics','Analytics','chart-line'],['funnels','Funnels','filter'],['utm','UTM reports','link']]],
+['Grow',[['marketing','Marketing','speakerphone'],['email','Email','mail'],['whatsapp','WhatsApp','brand-whatsapp'],['automations','Automations','route']]],
+['Convert',[['discounts','Discounts','discount'],['coupons','Coupons','ticket'],['upsells','Upsells','trending-up'],['crosssells','Cross-sells','arrows-shuffle'],['reviews','Reviews','star']]],
+['Build',[['landing','Landing pages','browser'],['pagebuilder','Page builder','layout-board'],['abtest','A/B testing','test-pipe'],['flags','Feature flags','flag']]],
+['System',[['users','Users','user-cog'],['permissions','Permissions','shield-lock'],['activity','Activity logs','history'],['settings','Settings','settings']]]
+];
+side.innerHTML=NAV.map(function(g){return '<div class="ng">'+g[0]+'</div>'+g[1].map(function(it){return '<div class="ni'+(it[0]==='dashboard'?' on':'')+'" data-v="'+it[0]+'">'+ic(it[2])+'<span>'+it[1]+'</span></div>'}).join('')}).join('');
+
+var CHART='<svg viewBox="0 0 600 150" width="100%" height="140" preserveAspectRatio="none" style="display:block"><polygon fill="var(--acb)" points="0,112 55,96 110,102 165,78 220,84 275,60 330,67 385,44 440,53 495,32 550,40 600,22 600,150 0,150"/><polyline fill="none" stroke="var(--ac)" stroke-width="2.5" points="0,112 55,96 110,102 165,78 220,84 275,60 330,67 385,44 440,53 495,32 550,40 600,22"/></svg><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);margin-top:6px"><span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Sep</span><span>Nov</span></div>';
+
+var KPI=[['Total revenue','$48,260','+12.4%','up','currency-dollar'],['Orders','1,284','+8.1%','up','shopping-cart'],['Conversion rate','3.42%','+0.6 pt','up','percentage'],['Avg. order value','$37.60','-1.2%','dn','receipt']];
+function metric(m){return '<div class="metric"><div class="l">'+ic('grip-vertical')+ic(m[4])+' '+m[0]+'</div><div class="v">'+m[1]+'</div><div class="dl '+m[3]+'">'+ic(m[3]==='up'?'arrow-up-right':'arrow-down-right')+m[2]+'</div></div>'}
+var FN=[['Sessions','52,400',100],['Product views','31,900',61],['Add to cart','9,420',18],['Checkout','4,710',9],['Purchases','2,830',5.4]];
+function fnrow(f){return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>'+f[0]+'</span><span style="color:var(--tx2)">'+f[1]+' · '+f[2]+'%</span></div>'+bar(f[2])+'</div>'}
+var PRD=[['Wooden rainbow stacker','$6,420',92],['STEM robotics kit','$5,180',74],['Montessori busy board','$4,060',58],['Felt story playset','$3,210',46]];
+
+var VIEWS={};
+VIEWS.dashboard=function(){return head('Good morning, Abdo','Here is what is happening with your store today.',sec('Last 30 days','calendar')+sec('Export','download')+pri('Add product'))
++'<div class="grid k4" id="kpis" style="margin-bottom:12px">'+KPI.map(metric).join('')+'</div>'
++'<div class="grid" style="grid-template-columns:1.7fr 1fr;margin-bottom:12px"><div class="card"><div class="ch">'+ic('chart-area')+'Revenue<span class="sp"></span>'+bd(ic('arrow-up-right')+'12.4%','bg')+'</div><div class="cb"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px"><span style="font-size:24px;font-weight:500">$48,260</span><span style="font-size:12px;color:var(--tx2)">vs $42,940 last period</span></div>'+CHART+'</div></div>'
++'<div class="card"><div class="ch">'+ic('filter')+'Conversion funnel</div><div class="cb">'+FN.map(fnrow).join('')+'</div></div></div>'
++'<div class="grid" style="grid-template-columns:1.7fr 1fr">'+ctbl('Recent orders','clock',['Order','Customer','Total','Status'],[['#1042','Lena P.','$84.00',bd('Paid','bg')],['#1041','Marco D.','$129.00',bd('Unfulfilled','ba')],['#1040','Aisha R.','$54.50',bd('Paid','bg')],['#1039','Tom H.','$212.00',bd('Refunded','br')],['#1038','Sara K.','$38.00',bd('Paid','bg')]],sec('View all','arrow-right'))
++'<div class="card"><div class="ch">'+ic('flame')+'Top products</div><div class="cb">'+PRD.map(function(p,i){return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:13px"><span style="font-size:12px;color:var(--tx3);width:12px">'+(i+1)+'</span><div style="flex:1;min-width:0"><div style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p[0]+'</div><div style="margin-top:5px">'+bar(p[2])+'</div></div><span style="font-size:12px;color:var(--tx2)">'+p[1]+'</span></div>'}).join('')+'</div></div></div>'};
+
+VIEWS.orders=function(){return head('Orders','1,284 orders · 38 awaiting fulfillment',sec('Export','download')+pri('Create order'))
++'<div class="tb"><span class="pill on">All</span><span class="pill">Unfulfilled</span><span class="pill">Unpaid</span><span class="pill">Open</span><span class="pill">Closed</span></div>'+toolbar()
++'<div class="card">'+tbl(['','Order','Date','Customer','Total','Payment','Fulfillment'],[
+['<input type="checkbox">','#1042','28 Jun','Lena Petrov','$84.00',bd('Paid','bg'),bd('Fulfilled','bg')],
+['<input type="checkbox">','#1041','28 Jun','Marco Diaz','$129.00',bd('Paid','bg'),bd('Unfulfilled','ba')],
+['<input type="checkbox">','#1040','27 Jun','Aisha Rahman','$54.50',bd('Pending','ba'),bd('Unfulfilled','ba')],
+['<input type="checkbox">','#1039','27 Jun','Tom Hughes','$212.00',bd('Refunded','br'),bd('Returned','bn')],
+['<input type="checkbox">','#1038','26 Jun','Sara Khoury','$38.00',bd('Paid','bg'),bd('Fulfilled','bg')],
+['<input type="checkbox">','#1037','26 Jun','Noah Bauer','$96.50',bd('Paid','bg'),bd('Partial','ba')],
+['<input type="checkbox">','#1036','25 Jun','Mia Wong','$147.00',bd('Paid','bg'),bd('Fulfilled','bg')]])+'</div>'};
+
+VIEWS.pagebuilder=function(){var dev='<div style="display:flex;gap:4px;margin-right:6px"><button class="ibtn" aria-label="Desktop"><i class="ti ti-device-desktop"></i></button><button class="ibtn" aria-label="Tablet"><i class="ti ti-device-ipad"></i></button><button class="ibtn" aria-label="Mobile"><i class="ti ti-device-mobile"></i></button></div>';
+var palitems=[['Hero','photo'],['Product grid','layout-grid'],['Rich text','align-left'],['Image banner','photo-up'],['Testimonial','message-2'],['Countdown','clock'],['Newsletter','mail'],['FAQ','help']];
+function blk(l,i){return '<div class="blk" draggable="true">'+ic('grip-vertical')+ic(i)+'<span>'+l+'</span>'+'<i class="ti ti-x x" aria-hidden="true"></i></div>'}
+return head('Page builder','Drag a block onto the canvas. Drag a block by its grip to reorder.',dev+sec('Preview','eye')+pri('Publish','rocket'))
++'<div class="pb"><div><div style="font-size:11px;color:var(--tx3);margin-bottom:8px">Blocks</div><div class="pal">'+palitems.map(function(p){return '<div class="pi" draggable="true" data-l="'+p[0]+'" data-i="'+p[1]+'">'+ic(p[1])+p[0]+'</div>'}).join('')+'</div></div>'
++'<div class="cv" id="cv">'+blk('Hero','photo')+blk('Product grid','layout-grid')+blk('Customer reviews','star')+'</div></div>'};
+
+VIEWS.funnels=function(){return head('Funnels','Checkout funnel · last 30 days',sec('Last 30 days','calendar'))
++'<div class="card" style="margin-bottom:12px"><div class="ch">'+ic('filter')+'Conversion funnel<span class="sp"></span>'+bd('5.4% overall','bc')+'</div><div class="cb">'+FN.map(fnrow).join('')+'</div></div>'
++ctbl('Step drop-off','arrow-down','Step Visitors Conversion Drop-off'.split(' ').map(function(x,i){return ['Step','Visitors','Conversion','Drop-off'][i]}),[
+['Sessions → product view','31,900','60.9%',bd('-39.1%','br')],
+['Product view → add to cart','9,420','29.5%',bd('-70.5%','br')],
+['Add to cart → checkout','4,710','50.0%',bd('-50.0%','ba')],
+['Checkout → purchase','2,830','60.1%',bd('-39.9%','ba')]])};
+
+VIEWS.abtest=function(){return head('A/B testing','3 running · 12 completed',pri('New experiment'))
++'<div class="card" style="margin-bottom:12px"><div class="ch">'+ic('test-pipe')+'Checkout: one-page vs multi-step<span class="sp"></span>'+bd('Running','bc')+'</div><div class="cb">'
++'<div style="display:flex;gap:16px"><div style="flex:1"><div style="font-size:12px;color:var(--tx2);margin-bottom:5px">Variant A · one-page</div>'+bar(72)+'<div style="font-size:13px;margin-top:5px">3.1% conversion</div></div><div style="flex:1"><div style="font-size:12px;color:var(--tx2);margin-bottom:5px">Variant B · multi-step</div>'+bar(88)+'<div style="font-size:13px;margin-top:5px">3.8% conversion · '+bd('+22% uplift','bg')+'</div></div></div>'
++'<div style="margin-top:12px;font-size:12px;color:var(--tx2)">Significance 96% · 18,400 visitors · sequential test</div></div></div>'
++ctbl('All experiments','list',['Experiment','Variants','Metric','Uplift','Status'],[
+['PDP add-to-cart color','2','Add to cart','+4.1%',bd('Running','bc')],
+['Free-shipping banner','3','Conversion','+9.7%',bd('Running','bc')],
+['Bundle upsell copy','2','AOV','-1.2%',bd('Completed','bn')]])};
+
+VIEWS.flags=function(){function row(n,k,env,roll,on){return [n,'<span style="font-family:var(--font-mono);font-size:11px;color:var(--tx2)">'+k+'</span>',bd(env,'bc'),roll,'<div class="sw'+(on?' on':'')+'"></div>']}
+return head('Feature flags','Ship behind flags. Toggle without a deploy.',pri('New flag'))
++'<div class="card">'+tbl(['Flag','Key','Environment','Rollout','Status'],[
+row('New checkout flow','checkout.v2','Production','25%',true),
+row('Wishlist gifting','wishlist.gifting','Production','100%',true),
+row('AI size finder','pdp.ai_finder','Staging','0%',false),
+row('Loyalty tiers','loyalty.tiers_v3','Production','50%',true)])+'</div>'};
+
+VIEWS.automations=function(){function ac(t,trig,steps,runs,on){return '<div class="card"><div class="cb"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-size:13.5px;font-weight:500">'+t+'</span><span class="sp"></span><div class="sw'+(on?' on':'')+'"></div></div><div style="font-size:12px;color:var(--tx2)">'+bd(trig,'bc')+' · '+steps+' steps · '+runs+' runs (30d)</div></div></div>'}
+return head('Automations','Lifecycle workflows triggered by events.',pri('New automation'))
++'<div class="grid" style="grid-template-columns:1fr 1fr">'+ac('Abandoned cart recovery','Cart abandoned',3,'1,204',true)+ac('Welcome series','Account created',5,'842',true)+ac('Post-purchase review','Order delivered',2,'2,310',true)+ac('Win-back lapsed','No order 90d',4,'318',false)+'</div>'};
+
+VIEWS.analytics=function(){var k=[['Sessions','52,400','+6.2%','up','users'],['Conversion','3.42%','+0.6 pt','up','percentage'],['Revenue','$48,260','+12.4%','up','currency-dollar'],['Returning','38.1%','+2.4 pt','up','repeat']];
+return head('Analytics','Store performance overview.',sec('Last 30 days','calendar'))
++'<div class="grid k4" style="margin-bottom:12px">'+k.map(metric).join('')+'</div>'
++'<div class="card" style="margin-bottom:12px"><div class="ch">'+ic('chart-area')+'Sessions and revenue</div><div class="cb">'+CHART+'</div></div>'
++ctbl('Top channels','world',['Channel','Sessions','Conv. rate','Revenue'],[
+['Organic search','18,900','3.9%','$16,420'],['Paid social','12,400','2.8%','$11,180'],['Email','7,600','5.1%','$9,640'],['Direct','6,800','3.2%','$6,210'],['Referral','4,200','2.1%','$2,810']])};
+
+VIEWS.utm=function(){return list('UTM reports','First-party multi-touch attribution.',sec('Export','download'),['Campaign','Source / medium','Sessions','Conv. rate','Revenue'],[
+['spring-stem-launch','google / cpc','9,420','4.2%','$12,840'],['parent-newsletter','klaviyo / email','5,180','5.6%','$9,210'],['ugc-creators','tiktok / paid','7,640','2.1%','$6,180'],['retargeting-q2','meta / cpc','4,310','3.8%','$5,640'],['blog-montessori','organic / referral','3,020','3.1%','$2,940']])};
+
+VIEWS.products=function(){return list('Products','312 products · 28 low stock',sec('Import','upload')+pri('Add product'),['Product','Status','Inventory','Price','Type'],[
+['Wooden rainbow stacker',bd('Active','bg'),'142 in stock','$32.00','Wooden'],['STEM robotics kit',bd('Active','bg'),'38 in stock','$74.00','STEM'],['Montessori busy board',bd('Active','bg'),'9 in stock','$45.00','Montessori'],['Felt story playset',bd('Draft','bn'),'0 in stock','$28.00','Soft play'],['Counting bears set',bd('Active','bg'),'210 in stock','$19.50','Early math']])};
+
+VIEWS.inventory=function(){function st(p){return '<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;max-width:90px">'+bar(p)+'</div><span style="font-size:11px;color:var(--tx2)">'+p+'%</span></div>'}
+return list('Inventory','Across 3 warehouses',sec('Adjust','adjustments')+pri('Transfer stock','arrows-exchange'),['Product','SKU','Available','Committed','Stock'],[
+['Wooden rainbow stacker','TS-WRS-01','142','12',st(78)],['STEM robotics kit','TS-STM-04','38','6',st(34)],['Montessori busy board','TS-MBB-02','9','3',st(8)],['Counting bears set','TS-CBS-09','210','18',st(92)]])};
+
+VIEWS.customers=function(){return list('Customers','8,420 customers · 38% returning',sec('Export','download')+pri('Add customer'),['Customer','Location','Orders','Spent','Segment'],[
+['Lena Petrov','Berlin, DE','7','$612.00',bd('VIP','bc')],['Marco Diaz','Madrid, ES','3','$284.00',bd('Repeat','bn')],['Aisha Rahman','Dubai, AE','12','$1,240.00',bd('VIP','bc')],['Tom Hughes','Leeds, UK','1','$212.00',bd('New','bg')],['Sara Khoury','Beirut, LB','5','$398.00',bd('Repeat','bn')]])};
+
+VIEWS.marketing=function(){return list('Marketing','Campaigns across all channels.',pri('Create campaign'),['Campaign','Channel','Status','Audience','Revenue'],[
+['Spring STEM launch','Email','Active','12,400','$9,210'],['Creator UGC push','TikTok','Active','—','$6,180'],['Retargeting Q2','Meta','Paused','8,900','$5,640'],['Back-to-school teaser','WhatsApp','Draft','3,200','—']].map(function(r){r[2]=bd(r[2],r[2]==='Active'?'bg':r[2]==='Paused'?'ba':'bn');return r}))};
+
+VIEWS.email=function(){return list('Email','SendGrid · 24,800 subscribers',pri('New campaign'),['Campaign','Status','Recipients','Open','Clicks','Revenue'],[
+['Spring catalog','Sent','18,400','42.1%','6.8%','$9,210'],['New arrivals','Sent','18,200','38.6%','5.2%','$6,040'],['Abandoned cart','Automated','1,204','51.3%','12.1%','$4,820'],['Win-back','Scheduled','3,100','—','—','—']].map(function(r){r[1]=bd(r[1],r[1]==='Sent'?'bg':r[1]==='Automated'?'bc':'bn');return r}))};
+
+VIEWS.whatsapp=function(){return list('WhatsApp','Cloud API · 6,200 opted-in',pri('New broadcast'),['Broadcast','Template','Delivered','Read','Replies','Status'],[
+['Order shipped','shipping_update','2,140','1,980','142',bd('Active','bg')],['Flash sale','promo_spring','5,800','4,210','318',bd('Sent','bg')],['Restock alert','back_in_stock','1,420','1,090','86',bd('Active','bg')],['Cart reminder','cart_recovery','—','—','—',bd('Pending','ba')]])};
+
+VIEWS.discounts=function(){return list('Discounts','Rules-based promotions engine.',pri('Create discount'),['Discount','Type','Value','Used','Status'],[
+['Spring sale','Percentage','20% off','4,210',bd('Active','bg')],['Free shipping over $50','Free shipping','—','8,640',bd('Active','bg')],['Bundle and save','Bundle','15% off','1,180',bd('Active','bg')],['Welcome 10','Percentage','10% off','2,940',bd('Scheduled','ba')]])};
+
+VIEWS.coupons=function(){return list('Coupons','Single-code redemptions.',pri('Create coupon'),['Code','Applies to','Used','Limit','Status'],[
+['<span style="font-family:var(--font-mono);font-size:11px">SPRING20</span>','Spring sale','4,210','10,000',bd('Active','bg')],['<span style="font-family:var(--font-mono);font-size:11px">WELCOME10</span>','Welcome 10','2,940','∞',bd('Active','bg')],['<span style="font-family:var(--font-mono);font-size:11px">STEM15</span>','STEM kits','680','2,000',bd('Active','bg')],['<span style="font-family:var(--font-mono);font-size:11px">VIPGIFT</span>','VIP segment','120','500',bd('Paused','ba')]])};
+
+VIEWS.upsells=function(){return list('Upsells','Post-add and post-purchase offers.',pri('Create upsell'),['Offer','On product','Recommends','Take rate','Status'],[
+['Add the activity book','STEM robotics kit','Activity book','14.2%',bd('Active','bg')],['Upgrade to deluxe set','Counting bears set','Deluxe bears','9.8%',bd('Active','bg')],['Gift wrap add-on','All products','Gift wrap','22.6%',bd('Active','bg')]])};
+
+VIEWS.crosssells=function(){return list('Cross-sells','Complementary recommendations.',pri('Create rule'),['Rule','Shown on','Recommends','Attach rate','Status'],[
+['Frequently bought together','Wooden rainbow stacker','Counting bears set','11.4%',bd('Active','bg')],['Pairs well with','STEM robotics kit','Coding cards','7.9%',bd('Active','bg')],['Complete the room','Montessori busy board','Wall shelf','5.2%',bd('Paused','ba')]])};
+
+VIEWS.reviews=function(){function stars(n){return '<span style="color:var(--am)">'+ic('star')+'</span> '+n}
+return list('Reviews','4.7 average · 2,840 reviews',sec('Export','download'),['Product','Rating','Review','Customer','Status'],[
+['Wooden rainbow stacker',stars('5.0'),'Beautifully made, my toddler loves it.','Lena P.',bd('Published','bg')],['STEM robotics kit',stars('4.0'),'Great, but instructions were tricky.','Marco D.',bd('Published','bg')],['Montessori busy board',stars('5.0'),'Perfect for fine motor skills.','Aisha R.',bd('Pending','ba')],['Felt story playset',stars('2.0'),'Smaller than expected.','Tom H.',bd('Flagged','br')]])};
+
+VIEWS.landing=function(){var pgs=[['Spring STEM launch','browser','Published','12,400','4.2%'],['Montessori guide','book','Published','6,180','3.1%'],['Gift finder quiz','help','Draft','—','—'],['Back to school','school','Scheduled','—','—'],['Creator collab','star','Published','8,900','5.6%'],['New parent hub','heart','Published','4,210','2.8%']];
+return head('Landing pages','6 pages · built with the page builder.',pri('New landing page'))
++'<div class="grid" style="grid-template-columns:repeat(3,1fr)">'+pgs.map(function(p){return '<div class="card"><div class="cb"><div class="lp">'+ic(p[1])+'</div><div style="display:flex;align-items:center;gap:8px;margin:10px 0 4px"><span style="font-size:13px;font-weight:500">'+p[0]+'</span><span class="sp"></span>'+bd(p[2],p[2]==='Published'?'bg':p[2]==='Draft'?'bn':'ba')+'</div><div style="font-size:12px;color:var(--tx2)">'+p[3]+' views · '+p[4]+' conv.</div></div></div>'}).join('')+'</div>'};
+
+VIEWS.users=function(){return list('Users','14 team members',pri('Invite user','mail'),['Name','Email','Role','Last active','Status'],[
+['Abdo Eyad','abdo@tinyscholars.com','Owner','Now',bd('Active','bg')],['Nadia Saleh','nadia@tinyscholars.com','Admin','2h ago',bd('Active','bg')],['Omar Fadel','omar@tinyscholars.com','Merchandiser','1d ago',bd('Active','bg')],['Lucy Tan','lucy@tinyscholars.com','Support','3d ago',bd('Invited','ba')]])};
+
+VIEWS.permissions=function(){var y='<i class="ti ti-check" style="color:var(--gr)"></i>',n='<i class="ti ti-minus" style="color:var(--tx3)"></i>';
+return head('Permissions','Role-based access control.',pri('New role'))+'<div class="card">'+tbl(['Role','Catalog','Orders','Marketing','Analytics','Settings'],[
+['Owner',y,y,y,y,y],['Admin',y,y,y,y,n],['Merchandiser',y,n,n,y,n],['Support',n,y,n,n,n],['Analyst',n,n,n,y,n]])+'</div>'};
+
+VIEWS.activity=function(){var a=[['NS','Nadia Saleh','refunded order #1039','12 min ago'],['AE','Abdo Eyad','published landing page “Spring STEM launch”','1h ago'],['OF','Omar Fadel','updated price on “STEM robotics kit”','2h ago'],['SY','System','released expired cart reservations (48)','3h ago'],['NS','Nadia Saleh','granted “Support” role to Lucy Tan','5h ago']];
+return head('Activity logs','Immutable audit trail.',sec('Export','download'))+'<div class="card"><div class="cb">'+a.map(function(x,i){return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;'+(i<a.length-1?'border-bottom:1px solid var(--bd)':'')+'"><div class="av" style="width:28px;height:28px;font-size:11px">'+x[0]+'</div><div style="flex:1;font-size:12.5px"><span style="font-weight:500">'+x[1]+'</span> <span style="color:var(--tx2)">'+x[2]+'</span></div><span style="font-size:11px;color:var(--tx3)">'+x[3]+'</span></div>'}).join('')+'</div></div>'};
+
+VIEWS.settings=function(){function field(l,v){return '<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)"><div style="flex:0 0 150px;font-size:12.5px;color:var(--tx2)">'+l+'</div><div style="font-size:12.5px">'+v+'</div></div>'}
+return head('Settings','Store configuration.',pri('Save','check'))
++'<div class="grid" style="grid-template-columns:1fr 1fr">'
++'<div class="card"><div class="ch">'+ic('building-store')+'Store details</div><div class="cb" style="padding-top:4px">'+field('Store name','Tiny Scholars')+field('Email','hello@tinyscholars.com')+field('Currency','USD ($)')+field('Timezone','GMT+2 Cairo')+'</div></div>'
++'<div class="card"><div class="ch">'+ic('credit-card')+'Checkout</div><div class="cb" style="padding-top:4px">'+field('Guest checkout','<div class="sw on"></div>')+field('Express pay','<div class="sw on"></div>')+field('Tax included','<div class="sw"></div>')+field('Abandoned email','<div class="sw on"></div>')+'</div></div></div>'};
+
+function after(child,sel,coord,axis){var els=[].slice.call(child.querySelectorAll(sel+':not(.drag)'));return els.reduce(function(c,e){var b=e.getBoundingClientRect();var off=axis==='x'?coord-b.left-b.width/2:coord-b.top-b.height/2;if(off<0&&off>c.off){return {off:off,el:e}}return c},{off:-Infinity}).el}
+function enableDrag(c,sel,axis){if(!c)return;[].slice.call(c.querySelectorAll(sel)).forEach(function(it){it.setAttribute('draggable','true');it.addEventListener('dragstart',function(){it.classList.add('drag')});it.addEventListener('dragend',function(){it.classList.remove('drag')})});c.addEventListener('dragover',function(e){e.preventDefault();var d=c.querySelector('.drag');if(!d)return;var a=after(c,sel,axis==='x'?e.clientX:e.clientY,axis);if(a==null)c.appendChild(d);else c.insertBefore(d,a)})}
+function wirePB(){var cv=document.getElementById('cv');if(!cv)return;var pend=null;
+function blkHTML(l,i){return '<div class="blk" draggable="true">'+ic('grip-vertical')+ic(i)+'<span>'+l+'</span><i class="ti ti-x x" aria-hidden="true"></i></div>'}
+function wireBlocks(){[].slice.call(cv.querySelectorAll('.blk')).forEach(function(b){if(b._w)return;b._w=1;b.addEventListener('dragstart',function(){b.classList.add('drag');pend=null});b.addEventListener('dragend',function(){b.classList.remove('drag')});b.querySelector('.x').addEventListener('click',function(){b.remove()})})}
+wireBlocks();
+[].slice.call(document.querySelectorAll('.pi')).forEach(function(p){p.addEventListener('dragstart',function(){pend={l:p.dataset.l,i:p.dataset.i}});p.addEventListener('click',function(){cv.insertAdjacentHTML('beforeend',blkHTML(p.dataset.l,p.dataset.i));wireBlocks()})});
+cv.addEventListener('dragover',function(e){e.preventDefault();cv.classList.add('over');var d=cv.querySelector('.drag');if(d){var a=after(cv,'.blk',e.clientY,'y');if(a==null)cv.appendChild(d);else cv.insertBefore(d,a)}});
+cv.addEventListener('dragleave',function(e){if(!cv.contains(e.relatedTarget))cv.classList.remove('over')});
+cv.addEventListener('drop',function(e){e.preventDefault();cv.classList.remove('over');if(pend){cv.insertAdjacentHTML('beforeend',blkHTML(pend.l,pend.i));pend=null;wireBlocks()}})}
+function wireSwitches(){[].slice.call(main.querySelectorAll('.sw')).forEach(function(s){s.addEventListener('click',function(){s.classList.toggle('on')})})}
+
+function render(v){main.innerHTML=(VIEWS[v]||VIEWS.dashboard)();
+if(v==='dashboard')enableDrag(document.getElementById('kpis'),'.metric','x');
+if(v==='pagebuilder')wirePB();
+if(v==='flags'||v==='automations'||v==='settings')wireSwitches()}
+
+[].slice.call(side.querySelectorAll('.ni')).forEach(function(n){n.addEventListener('click',function(){[].slice.call(side.querySelectorAll('.ni')).forEach(function(x){x.classList.remove('on')});n.classList.add('on');render(n.dataset.v)})});
+document.getElementById('dm').addEventListener('click',function(){root.classList.toggle('dark');var d=root.classList.contains('dark');document.getElementById('dm').querySelector('i').className='ti ti-'+(d?'sun':'moon')});
+render('dashboard');
+})();
+</script>
+<!-- END approved prototype -->
+</body>
+</html>

@@ -1,0 +1,121 @@
+/*
+ * @platform/design — design tokens (Tailwind v4 CSS-first).
+ * FROZEN values from docs/ui/DESIGN_SYSTEM.md. Do not redesign.
+ *
+ * Usage (in an app's globals.css):
+ *   @import "tailwindcss";
+ *   @import "@platform/design/styles.css";
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Brand tokens — light mode (verbatim from the frozen design system) */
+  --bg: #f6f6f7;
+  --surface: #ffffff;
+  --surface2: #fafafb;
+  --bd: #e8e8eb;
+  --bds: #d8d8dd;
+  --hov: #f1f1f4;
+  --tx: #16161a;
+  --tx2: #5b5e66;
+  --tx3: #8d909a;
+  --ac: #5b53e0;
+  --acb: #eeedfc;
+  --act: #4a43c9;
+  --gr: #0f8a4f;
+  --grb: #e6f5ec;
+  --am: #b5740a;
+  --amb: #fbf0db;
+  --rd: #c92f24;
+  --rdb: #fcebe9;
+
+  /* Semantic (shadcn) tokens, mapped from the brand tokens above */
+  --background: var(--bg);
+  --foreground: var(--tx);
+  --card: var(--surface);
+  --card-foreground: var(--tx);
+  --popover: var(--surface);
+  --popover-foreground: var(--tx);
+  --primary: var(--ac);
+  --primary-foreground: #ffffff;
+  --secondary: var(--hov);
+  --secondary-foreground: var(--tx);
+  --muted: var(--hov);
+  --muted-foreground: var(--tx2);
+  --accent: var(--acb);
+  --accent-foreground: var(--act);
+  --destructive: var(--rd);
+  --destructive-foreground: #ffffff;
+  --border: var(--bd);
+  --input: var(--bd);
+  --ring: var(--ac);
+
+  /* Frozen radius scale (control = 8px) */
+  --radius: 0.5rem;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.dark {
+  /* Brand tokens — dark mode (verbatim). Semantic tokens cascade via var(). */
+  --bg: #0e0e11;
+  --surface: #17171c;
+  --surface2: #1d1d23;
+  --bd: #2a2a31;
+  --bds: #3a3a44;
+  --hov: #222229;
+  --tx: #f1f1f4;
+  --tx2: #a6a9b1;
+  --tx3: #71747d;
+  --ac: #8b84f8;
+  --acb: #272341;
+  --act: #b8b3fb;
+  --gr: #3fd089;
+  --grb: #102619;
+  --am: #e0a008;
+  --amb: #2a2008;
+  --rd: #f6776b;
+  --rdb: #2a1512;
+}
+
+/* Expose tokens to Tailwind v4 utilities (bg-background, text-foreground, rounded-lg, …) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Extra frozen surfaces + roles, available as utilities */
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface2);
+  --color-success: var(--gr);
+  --color-success-bg: var(--grb);
+  --color-warning: var(--am);
+  --color-warning-bg: var(--amb);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Frozen radius scale: control 8px, card 12px, root 14px */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.875rem;
+}

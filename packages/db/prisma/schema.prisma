@@ -1,0 +1,16 @@
+// Prisma schema — INFRASTRUCTURE ONLY (Sprint 0.2). No business models.
+//
+// Schema-per-bounded-context organization (docs/architecture/03) and Postgres-specific
+// features the architecture relies on (multi-schema, monthly partitioning, GIN indexes,
+// UUIDv7 defaults) land WITH business models in later sprints — via Prisma multi-file
+// schemas and custom migration SQL where Prisma cannot express them natively. Adding any
+// model here is out of scope for Sprint 0.2.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
