@@ -17,11 +17,12 @@ A Turborepo + pnpm monorepo. Workspaces are globbed in `pnpm-workspace.yaml`: `a
 Backend bounded-context services live under `services/<context>/` as a Clean-Architecture slice
 (`domain/ application/ infrastructure/ interfaces/`). `services/example` is the **non-business
 walking-skeleton reference** (proving domain → application → repository → outbox → messaging end to
-end). **Phase 1 contexts:** `services/catalog` (products/variants/categories) and `services/media`
-(asset metadata) — currently with in-memory persistence + outbox (Prisma, real object storage, and
+end). **Phase 1 contexts:** `services/catalog` (products/variants/categories), `services/media`
+(asset metadata), `services/pricing` (price lists/prices), and `services/inventory` (stock levels/
+reservations) — currently with in-memory persistence + outbox (Prisma, real object storage, and
 transport adapters are deferred). Contexts never import each other's source; they reference each
-other by bare id (e.g. Catalog's `MediaRef`) and, later, via events/generated clients. Scaffold new
-services with `pnpm gen service`.
+other by bare id (e.g. Catalog's `MediaRef`, Pricing/Inventory's `ProductRef`) and, later, via
+events/generated clients. Scaffold new services with `pnpm gen service`.
 
 ## Shared packages
 
