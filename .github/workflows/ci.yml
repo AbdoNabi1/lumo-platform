@@ -38,8 +38,11 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Test (placeholder)
+      - name: Test
         run: pnpm test
+
+      - name: Architecture (dependency rules)
+        run: pnpm arch
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

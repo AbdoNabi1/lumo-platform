@@ -1,0 +1,7 @@
+import type { {{ pascalCase name }} } from "./{{ kebabCase name }}";
+
+/** Persistence port for {@link {{ pascalCase name }} }. Implemented in infrastructure. */
+export interface {{ pascalCase name }}Repository {
+  save(entity: {{ pascalCase name }}): Promise<void>;
+  findById(id: string): Promise<{{ pascalCase name }} | null>;
+}
