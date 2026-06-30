@@ -12,6 +12,17 @@ A Turborepo + pnpm monorepo. Workspaces are globbed in `pnpm-workspace.yaml`: `a
 > The admin app (React + Vite, per `docs/architecture/01`) and its **frozen** UI
 > (`docs/ui/`) are introduced in a later sprint — not in Sprint 0.1.
 
+## Services
+
+Backend bounded-context services live under `services/<context>/` as a Clean-Architecture slice
+(`domain/ application/ infrastructure/ interfaces/`). `services/example` is the **non-business
+walking-skeleton reference** (proving domain → application → repository → outbox → messaging end to
+end). **Phase 1 contexts:** `services/catalog` (products/variants/categories) and `services/media`
+(asset metadata) — currently with in-memory persistence + outbox (Prisma, real object storage, and
+transport adapters are deferred). Contexts never import each other's source; they reference each
+other by bare id (e.g. Catalog's `MediaRef`) and, later, via events/generated clients. Scaffold new
+services with `pnpm gen service`.
+
 ## Shared packages
 
 Grouped by Clean Architecture layer (lower layers never depend on higher ones).
@@ -70,21 +81,30 @@ Grouped by Clean Architecture layer (lower layers never depend on higher ones).
 | `@platform/design`                                                             | Design tokens — encodes the **frozen** UI design system (`docs/ui/DESIGN_SYSTEM.md`). |
 | `@platform/eslint-config` · `@platform/tsconfig` · `@platform/prettier-config` | Shared ESLint / TypeScript / Prettier configs.                                        |
 
-## Dependency rules (enforced by convention now; CI fitness functions later)
+## Dependency rules (enforced in CI via `pnpm arch` — dependency-cruiser)
 
 - Packages never import from `apps/` or `services/`.
-- Apps/services import packages; never each other's internals.
-- **Domain (`@platform/domain`) depends only on the kernel** (`@platform/types`, `@platform/utils`) — no infrastructure, frameworks, or id/clock generation.
-- **Outbound port interfaces live in leaf packages (`@platform/contracts`, `@platform/repository`); their DI tokens live in `@platform/application`.** Infrastructure adapters depend only on the contract package — `@platform/db`→`@platform/repository`, `@platform/id`/`@platform/clock`→`@platform/contracts` — never on `@platform/application`. Application packages never import infrastructure; dependencies point inward (docs/architecture/02; ADR-0002).
+- Apps/services import packages; never each other's internals (a service may not import another service's `src`).
+- **Domain (`@platform/domain` and `services/*/src/domain`) depends only on the kernel** (`@platform/types`, `@platform/utils`) + `@platform/domain` — no infrastructure, frameworks, messaging, or id/clock generation.
+- **Application never imports `@platform/messaging` or infrastructure** — it depends on domain + ports only; **messaging never imports application or infrastructure**. Dependencies point inward (docs/architecture/02; ADR-0002).
+- **Import packages via their public entry** — `@platform/<pkg>` (or a declared subpath like `/testing`), **never a deep `@platform/<pkg>/src/*` path**.
 - Cross-package types resolve via workspace symlinks (`exports` → `src/index.ts`); apps compile
   package source via Next `transpilePackages`.
+- **`pnpm arch`** (`.dependency-cruiser.cjs`) enforces all of the above + **no circular dependencies** (runtime cycles), and is gated in CI.
 
-## Adding a package
+## Generators (`pnpm gen`)
+
+Scaffold consistently (never hand-roll); generated code passes lint/typecheck/test/arch on creation:
 
 ```bash
-pnpm gen        # choose "package", enter a name + description
-pnpm install    # link the new workspace package
+pnpm gen package     # a shared @platform/* package (README + vitest + sample test)
+pnpm gen service     # a bounded-context service under services/ (clean-architecture slice)
+pnpm gen aggregate   # a domain aggregate + repository port (+ test) inside a service
+pnpm gen use-case    # an application use-case (+ test) inside a service
+pnpm install         # link any new workspace package
 ```
+
+`services/example` is the canonical reference output. Templates live in `turbo/generators/`.
 
 ## Versioning
 
@@ -94,4 +114,5 @@ Apps (e.g. `storefront`) are private and excluded.
 ## Turborepo tasks
 
 Defined in `turbo.json`: `build`, `lint`, `typecheck`, `test`, `dev`, `clean`. Builds are cached
-and parallelized; `dev` is persistent and uncached.
+and parallelized; `dev` is persistent and uncached. Architecture fitness runs via the root
+`pnpm arch` script (dependency-cruiser), gated in CI alongside lint/typecheck/build/test.

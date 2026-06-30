@@ -35,11 +35,11 @@ and customization**. Built incrementally at senior-architecture quality; **quali
 | **Messaging** (event backbone; above application)         | `messaging` (transactional outbox write-side, `EventPublisher`/`EventConsumer`, idempotency, retry, DLQ; in-memory adapters — broker/Debezium/Avro deferred)                                                                                                                     |
 | **Infrastructure** (adapters)                             | `db` (Prisma + repo adapter), `redis`, `clickhouse`, `storage` (S3/MinIO), `secrets`, `observability` (OTel), `health`, `id` (`CryptoIdGenerator` → UUIDv7), `clock` (`SystemClock`)                                                                                             |
 | **UI + build config**                                     | `ui` (shadcn), `design` (frozen tokens), `eslint-config`, `tsconfig`, `prettier-config`                                                                                                                                                                                          |
-| **Apps**                                                  | `apps/storefront` (Next.js shell), `apps/admin/prototype` (**frozen** UI HTML)                                                                                                                                                                                                   |
+| **Apps / Services**                                       | `apps/storefront` (Next.js shell), `apps/admin/prototype` (**frozen** UI HTML), `services/example` (walking-skeleton reference — non-business), `services/catalog`, `services/media` (Phase 1 contexts; in-memory persistence)                                                   |
 
 Per-package responsibilities: [`development/WORKSPACE_GUIDE.md`](development/WORKSPACE_GUIDE.md).
 
-## Dependency rules (enforced by convention; CI fitness functions planned)
+## Dependency rules (enforced in CI via `pnpm arch` — dependency-cruiser)
 
 - Packages never import from `apps/`. Apps/services import packages, never each other's internals.
 - **Domain** depends only on the kernel. **Application** never imports infrastructure (uses ports + DI).
@@ -55,7 +55,9 @@ Per-package responsibilities: [`development/WORKSPACE_GUIDE.md`](development/WOR
 - **0.5 (design only, 2026-06-29):** Phase 1 (Commerce Core) business-layer design — YAGNI-scoped to 9 contexts (catalog, media, pricing, inventory, cart, checkout, orders, payments, identity); conforms to the contract, no ADR. Spec: [SPRINT_0_5_PHASE1_DESIGN.md](implementation/SPRINT_0_5_PHASE1_DESIGN.md).
 - ✅ **0.6 event backbone (2026-06-30):** `@platform/domain-events` (integration-event contracts) + `@platform/messaging` (outbox write-side, publisher/consumer, idempotency, retry, DLQ; in-memory adapters). Classic outbox, no CQRS/ES; `domain ← application ← messaging ← infrastructure`. Broker/Debezium/Avro adapters deferred. See DECISIONS D-023/D-024, [SPRINT_0_6_REPORT.md](implementation/SPRINT_0_6_REPORT.md).
 - ✅ **0.7 auth/flags seams (2026-06-30):** auth/authz **ports** added to `@platform/contracts` (`Principal`/`Authenticator` → `Principal | null`; `Permission`/`AccessControl` → `boolean`); `AuthenticationError`/`AuthorizationError` added to `@platform/utils`; new `@platform/feature-flags` (`FeatureFlags` + `InMemoryFeatureFlags`, minimal). No `@platform/security`, no audit, no DI tokens, no rollout engine — all deferred. See DECISIONS D-025, [SPRINT_0_7_REPORT.md](implementation/SPRINT_0_7_REPORT.md).
-- **Next:** Sprint 0.8 — dependency-cruiser fitness functions + generators + walking skeleton, then Phase 1 (1.1–1.6). See [PROJECT_STATE.md](PROJECT_STATE.md).
+- ✅ **0.8 fitness functions + walking skeleton (2026-06-30):** `dependency-cruiser` + `pnpm arch` (CI gate) enforce dependency direction, the deep-import ban (`@platform/<pkg>`, never `/src/*`), and no-cycles; `turbo gen` generators (package/service/aggregate/use-case); `services/example` proves API→application→domain→repository→outbox→messaging in-process. **Phase 0 plumbing complete.** See [SPRINT_0_8_REPORT.md](implementation/SPRINT_0_8_REPORT.md).
+- ✅ **1.1 Commerce Core: Catalog + Media (2026-06-30):** `services/catalog` (Product/Variant/Category; `product.published`/`product.updated`) + `services/media` (Asset; `media.asset_ready`). Independent Clean-Architecture slices on the kernel/messaging; in-memory persistence + outbox (Prisma/broker deferred); no cross-context imports (`MediaRef` by id); framework-agnostic controllers + `present()`. VO factories return `Result`, aggregate invariants throw `DomainError`→Result; `Money`/`Slug` context-local pending rule-of-three. See DECISIONS D-026, [SPRINT_1_1_REPORT.md](implementation/SPRINT_1_1_REPORT.md).
+- **Next:** Sprint 1.2 — Pricing + Inventory. See [PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## Important conventions & coding standards
 
